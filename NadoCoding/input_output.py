@@ -38,3 +38,69 @@ print("{0:^<+30,}".format(10000000000))
 print("{0:f}".format(5/3))
 # 소수점을 특정 자리까지만 표기
 print("{0:.2f}".format(5/3)) # 소수점 둘째자리까지 표기 -> 셋째 자리에서 반올림.
+
+## 파일 입출력
+score_file = open("score.txt", "w", encoding = "utf8") # 쓰기 용도
+print("수학 : 0", file = score_file)
+print("영어 : 50", file = score_file)
+score_file.close()
+
+score_file = open("score.txt", "a") # 뒤에 이어 쓰기. 
+score_file.write("과학 : 80")
+score_file.write("\n코딩 : 100")
+score_file.close()
+
+score_file = open("score.txt", "r") # read
+print(score_file.read())
+score_file.close()
+
+score_file = open("score.txt", "r")
+print(score_file.readline()) # 한줄 읽고 커서는 다음 줄로 이동
+print(score_file.readline()) # 다음 줄이 출력됨
+print(score_file.readline())
+print(score_file.readline())
+score_file.close()
+
+score_file = open("score.txt", "r", encoding = "utf8")
+while True:
+    line = score_file.readline()
+    if not line:
+        break
+    print(line, end = "")
+score_file.close()
+
+score_file = open("score.txt", "r", encoding = "utf8")
+lines = score_file.readlines() # list 형태로 저장하기
+for line in lines:
+    print(line, end = "")
+
+## pickle : 사용하는 데이터를 파일 형태로 저장.
+import pickle
+profile_file = open("profile.pickle", "wb") # wb : binary write.
+profile = {"name" : "abc", "age" : 30, "hobby" : ["soccer", "golf", "coding"]}
+print(profile)
+pickle.dump(profile, profile_file) # profile에 있는 정보를 profile_file에 저장
+profile_file.close()
+
+profile_file = open("profile.pickle", "rb")
+profile = pickle.load(profile_file)
+print(profile)
+
+## with
+import pickle 
+with open("profile.pickle", "rb") as profile_file: # pickle 파일을 열어서 profile_file이라는 변수로 저장
+    print(pickle.load(profile_file)) # close할 필요 없이 with 내에서 자동 종료.
+
+with open("study.txt", "w", encoding = "utf8") as study_file:
+    study_file.write("python studying") # close 없이 파일 작성 완료됨.
+
+with open("study.txt", "r") as study_file:
+    print(study_file.read())
+
+## 퀴즈 7
+for weeks in range(1,4):
+    with open(str(weeks) + "주차.txt", "w", encoding = "utf8") as report_file:
+        report_file.write(" - {0} 주차 주간보고 - " .format(weeks))
+        report_file.write("\n부서 :")
+        report_file.write("\n이름 :")
+        report_file.write("\n업무 요약 :")
